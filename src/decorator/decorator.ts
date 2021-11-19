@@ -40,4 +40,11 @@ export const Put = createRequestMethodDecorator('put');
 export const Delete = createRequestMethodDecorator('delete');
 
 
+export const pathParamKey = "pathParam";
+
+export function PathParam(paramKey): ParameterDecorator {
+    return function (target, propertyKey) {
+
+    }
+}
 
