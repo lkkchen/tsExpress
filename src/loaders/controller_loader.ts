@@ -1,14 +1,12 @@
 import {loadFiles, LoadFileResult} from "./file_loader";
-import {controllerPathKey, requestMethodKey, requestMethodPathKey} from "../decorator/decorator";
+import {controllerPathKey, requestMethodKey, requestMethodPathKey} from "../decorators/decorator";
 import {RequestHandler} from "express-serve-static-core";
 
 
 export interface LoadControllerResult {
     path: string,
     method: string | 'get' | 'post' | 'put' | 'delete',
-    middleware?: RequestHandler,
-    func: RequestHandler,
-    funcName: string
+    func: RequestHandler
 }
 
 export async function loadController(): Promise<Array<LoadControllerResult>> {
@@ -37,15 +35,28 @@ export async function loadController(): Promise<Array<LoadControllerResult>> {
             const reqPath = Reflect.getMetadata(requestMethodPathKey, instance, methodName);
 
             const handlerFunc: RequestHandler = (req, res, next) => {
-
+                res['isFindRoute'] = true;
+                let handler = prototype[methodName].bind(instance);
+                if(Object.prototype.toString.call(handler) === '[object AsyncFunction]'){
+                    handler = function (req, res, next) {
+                        prototype[methodName].bind(instance)(req, res).then((result) => {
+                            res['resResult'] = result;
+                            next();
+                        }).catch((err) => {
+                            res['resError'] = err;
+                            next();
+                        })
+                    };
+                    return handler(req, res, next);
+                }
+                res['resResult'] = handler(req, res, next);
+                next();
             };
 
             result.push({
                 path: `${basePath}${reqPath}`,
                 method: reqMethod,
-                middleware: null,
-                func: prototype[methodName].bind(instance),
-                funcName: methodName
+                func: handlerFunc,
             });
         }
 

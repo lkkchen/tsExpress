@@ -9,25 +9,24 @@ import {
 } from 'express';
 
 import * as bodyParser from 'body-parser'
-import {loadController, LoadControllerResult} from "./loader/controller_loader";
+import {loadController, LoadControllerResult} from "./loaders/controller_loader";
 
 
 class TsExpressApplication {
     app: Application;
-    ctx: object;
     config: object;
 
-    constructor(config) {
+    constructor(config: object) {
         this.config = config;
     }
 
-    loadBodyParser(){
+    async loadBodyParser(){
         this.app.use(bodyParser.urlencoded({extended: false}));
         this.app.use(bodyParser.json({limit: "10mb"}));
     }
 
     // 这个其实也是中间件 可以让用户自定义
-    loadOriginCrossSetting(){
+    async loadOriginCrossSetting(){
         this.app.use(function (req: Request, res: Response, next: NextFunction) {
            const originalPath = req.originalUrl.split("?")[0];
 
@@ -48,23 +47,64 @@ class TsExpressApplication {
         });
     }
 
-    loadMiddleware(middlewareFuncList){
+    async loadMiddleware(middlewareFuncList: Array<any>){
         for(const middleware of middlewareFuncList){
             this.app.use(middleware);
         }
     }
 
+    async loadResultHandler(){
+        this.app.use((req, res, next) => {
+            const result = {code: 0};
+            if(!res['isFindRoute']){
+                return next();
+            }
+
+            if(res['resResult']) result['data'] = res['resResult'];
+            if(res['resError']) {
+                result.code = 500;
+                result['msg'] = "Server Error";
+                if(res['resError'].code) result.code = res['resError'].code;
+                if(res['resError'].msg) result['msg'] = res['resError'].msg;
+            }
+
+            res.send(result);
+        });
+    }
+
+    async notFoundHandler(){
+        this.app.use((req, res) => {
+            res.send('404 - Not Found');
+        });
+    }
+
     async loadRoutes(){
         const controllerList: Array<LoadControllerResult> = await loadController();
         const router = express.Router();
-
+        console.log(controllerList);
         for(const controller of controllerList){
-            if(controller.middleware){
-                router.use(controller.path, controller.middleware, controller.func);
-            }
-
+            router[controller.method](controller.path, controller.func);
         }
-
+        this.app.use(router);
     }
 
+    async start(){
+        this.app = express();
+        await this.loadBodyParser();
+        await this.loadOriginCrossSetting();
+        await this.loadMiddleware([]);
+        await this.loadRoutes();
+        await this.loadResultHandler();
+        await this.notFoundHandler();
+
+
+        this.app.listen(8080,() => {
+            console.log('TsExpressApplication Started...');
+        })
+    }
 }
+
+
+export default TsExpressApplication;
+
+

@@ -7,8 +7,13 @@ export interface LoadFileResult {
 }
 
 export function loadFiles(dirPath: string): Array<LoadFileResult> {
-    const startPath = fsPath.join(__dirname, dirPath);
-    const from = fsPath.relative(process.cwd(), dirPath);
+    const baseDir = fsPath.join(process.cwd(), 'test');
+    console.log(baseDir);
+
+    const startPath = fsPath.join(baseDir, dirPath);
+    const from = fsPath.basename(startPath);
+    console.log(startPath);
+    console.log(from);
 
     let result: Array<LoadFileResult> = [];
     function finder(path, faDirName = "") {
