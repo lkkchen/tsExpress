@@ -19,8 +19,9 @@ export const controllerPathKey = "controllerPath";
 export const requestMethodKey = "requestMethod";
 export const requestMethodPathKey = "requestMethodPath";
 
+
 export function Controller(path): ClassDecorator {
-    return function (target: any) {
+    return function (target) {
         Reflect.defineMetadata(controllerPathKey, path, target);
     }
 }
@@ -41,10 +42,19 @@ export const Delete = createRequestMethodDecorator('delete');
 
 
 export const pathParamKey = "pathParam";
-
-export function PathParam(paramKey): ParameterDecorator {
+export function PathParam(field): ParameterDecorator {
     return function (target, propertyKey) {
-
+        Reflect.defineMetadata(target, pathParamKey, target, propertyKey);
     }
 }
 
+export const middlewareKey = "middleware";
+export function Middleware(name) {
+    return function (target, propertyKey?) {
+        if(propertyKey){
+            Reflect.defineMetadata(middlewareKey, name, target, propertyKey);
+        }else{
+            Reflect.defineMetadata(middlewareKey, name, target);
+        }
+    }
+}

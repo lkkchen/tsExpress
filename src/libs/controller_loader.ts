@@ -1,12 +1,13 @@
 import {loadFiles, LoadFileResult} from "./file_loader";
-import {controllerPathKey, requestMethodKey, requestMethodPathKey} from "../decorators/decorator";
+import {controllerPathKey, middlewareKey, requestMethodKey, requestMethodPathKey} from "../libs/decorators";
 import {RequestHandler} from "express-serve-static-core";
 
 
 export interface LoadControllerResult {
     path: string,
     method: string | 'get' | 'post' | 'put' | 'delete',
-    func: RequestHandler
+    func: RequestHandler,
+    middlewareNames: Array<string>,
 }
 
 export async function loadController(): Promise<Array<LoadControllerResult>> {
@@ -20,6 +21,7 @@ export async function loadController(): Promise<Array<LoadControllerResult>> {
 
         const theClass = cls[clsKey];
         const basePath = Reflect.getMetadata(controllerPathKey, theClass);
+        const controllerMiddlewareName = Reflect.getMetadata(middlewareKey, theClass);
 
         const instance = new theClass();
         const prototype = Reflect.getPrototypeOf(instance);
@@ -33,6 +35,7 @@ export async function loadController(): Promise<Array<LoadControllerResult>> {
 
             const reqMethod = Reflect.getMetadata(requestMethodKey, instance, methodName);
             const reqPath = Reflect.getMetadata(requestMethodPathKey, instance, methodName);
+            const methodMiddlewareName = Reflect.getMetadata(middlewareKey, instance, methodName);
 
             const handlerFunc: RequestHandler = (req, res, next) => {
                 res['isFindRoute'] = true;
@@ -53,10 +56,15 @@ export async function loadController(): Promise<Array<LoadControllerResult>> {
                 next();
             };
 
+            const middlewareNames = [];
+            if(controllerMiddlewareName) middlewareNames.push(controllerMiddlewareName);
+            if(methodMiddlewareName && middlewareNames.indexOf(methodMiddlewareName) === -1) middlewareNames.push(methodMiddlewareName);
+
             result.push({
                 path: `${basePath}${reqPath}`,
                 method: reqMethod,
                 func: handlerFunc,
+                middlewareNames: middlewareNames,
             });
         }
 

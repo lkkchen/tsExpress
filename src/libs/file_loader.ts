@@ -3,11 +3,12 @@ import * as fsPath from 'path';
 
 export interface LoadFileResult {
     filePath: string,
+    name: string,
     propertyName: string
 }
 
 export function loadFiles(dirPath: string): Array<LoadFileResult> {
-    const baseDir = fsPath.join(process.cwd(), 'test');
+    const baseDir = fsPath.join(process.cwd(), 'src');
     console.log(baseDir);
 
     const startPath = fsPath.join(baseDir, dirPath);
@@ -23,9 +24,7 @@ export function loadFiles(dirPath: string): Array<LoadFileResult> {
             let stats = fs.statSync(fPath);
             let ext = fsPath.extname(name);
             let noExtName = fsPath.basename(name, ext).toLowerCase();
-
             noExtName = noExtName.split(from).join("");
-            // console.log(noExtName)
 
             const fpName = faDirName ? `${faDirName}.${noExtName}` : noExtName;
             if (stats.isDirectory()) {
@@ -35,6 +34,7 @@ export function loadFiles(dirPath: string): Array<LoadFileResult> {
 
             result.push({
                 filePath: fPath,
+                name: noExtName,
                 propertyName:fpName,
             });
         }
