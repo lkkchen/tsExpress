@@ -4,7 +4,7 @@ import * as fsPath from 'path';
 export interface LoadFileResult {
     filePath: string,
     name: string,
-    propertyName: string
+    propertyName: string   // controller/UserController.ts  -> controller.user
 }
 
 export function loadFiles(dirPath: string): Array<LoadFileResult> {

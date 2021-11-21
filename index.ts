@@ -7,7 +7,7 @@ import {
 
 import * as bodyParser from 'body-parser'
 import {loadController, LoadControllerResult} from "./src/libs/controller_loader";
-import {loadMiddleware, LoadMiddlewareResult, MiddlewareMap} from "./src/libs/middleware_loader";
+import {loadMiddleware, MiddlewareMap} from "./src/libs/middleware_loader";
 
 
 class TsExpressApplication {
@@ -52,8 +52,6 @@ class TsExpressApplication {
         this.app.use(router);
 
         this.app.use(this.middlewareDataMap.get("resultHandler").func);
-
-
         this.app.use(this.middlewareDataMap.get("notFoundHandler").func)
     }
 
@@ -62,8 +60,6 @@ class TsExpressApplication {
         await this.loadBodyParser();
         await this.loadMiddlewareDataMap();
         await this.loadRoutes();
-
-
 
 
         this.app.listen(8080,() => {

@@ -1,5 +1,5 @@
 import {loadFiles, LoadFileResult} from "./file_loader";
-import {controllerPathKey, middlewareKey, requestMethodKey, requestMethodPathKey} from "../libs/decorators";
+import {controllerPathKey, middlewareKey, requestMethodKey, requestMethodPathKey} from "./decorators";
 import {RequestHandler} from "express-serve-static-core";
 
 
@@ -46,6 +46,11 @@ export async function loadController(): Promise<Array<LoadControllerResult>> {
                             res['resResult'] = result;
                             next();
                         }).catch((err) => {
+                            console.error("----------ERROR-----------");
+                            console.error(err);
+                            console.error(err.toString());
+                            if(err.stack) console.error(err.stack);
+                            console.error("----------ERROR-----------");
                             res['resError'] = err;
                             next();
                         })
