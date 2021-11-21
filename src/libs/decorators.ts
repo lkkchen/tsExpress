@@ -3,8 +3,11 @@ import 'reflect-metadata';
 export function Inject (): PropertyDecorator {
     return function (target: any, propertyKey: string | symbol) {
         const typeClass = Reflect.getMetadata('design:type', target, propertyKey);
+        console.log(typeClass);
+        console.log(typeClass.name);
 
         const descriptor = Reflect.getOwnPropertyDescriptor(target, propertyKey) || {writable: true, configurable: true};
+        // 这里 创建过的对象使用容器 装起来
         descriptor.value = new typeClass();
         Reflect.defineProperty(
             (target && target.prototype) || target,
