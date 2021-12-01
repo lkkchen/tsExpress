@@ -61,6 +61,7 @@ export async function loadController(): Promise<Array<LoadControllerResult>> {
                 next();
             };
 
+            // controller的中间件在前 路由的在后
             const middlewareNames = [];
             if(controllerMiddlewareName) middlewareNames.push(controllerMiddlewareName);
             if(methodMiddlewareName && middlewareNames.indexOf(methodMiddlewareName) === -1) middlewareNames.push(methodMiddlewareName);

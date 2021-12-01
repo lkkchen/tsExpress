@@ -61,9 +61,9 @@ class TsExpressApplication {
         await this.loadMiddlewareDataMap();
         await this.loadRoutes();
 
-
-        this.app.listen(8080,() => {
-            console.log('TsExpressApplication Started...');
+        const port = 8080;
+        this.app.listen(port,() => {
+            console.log(`TsExpressApplication Started At: http://localhost:${port}...`);
         })
     }
 }
