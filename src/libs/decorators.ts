@@ -20,6 +20,7 @@ export function Inject (): PropertyDecorator {
 
         let ins = IocContainer.getInstance(typeClass.name);
         if(!ins) ins = IocContainer.saveInstance(typeClass.name, typeClass);
+
         descriptor.value = ins;
         Reflect.defineProperty(
             (target && target.prototype) || target,
