@@ -1,14 +1,26 @@
 import 'reflect-metadata';
 
+import IocContainer from "./ioc_container"
+
+export function Provide(): ClassDecorator {
+    return function (target) {
+        IocContainer.saveClass(target.name, target);
+    }
+}
+
 export function Inject (): PropertyDecorator {
     return function (target: any, propertyKey: string | symbol) {
+
         const typeClass = Reflect.getMetadata('design:type', target, propertyKey);
-        console.log(typeClass);
-        console.log(typeClass.name);
+        // console.log(typeClass);
+        // console.log(typeClass.name);
 
         const descriptor = Reflect.getOwnPropertyDescriptor(target, propertyKey) || {writable: true, configurable: true};
-        // 这里 创建过的对象使用容器 装起来
-        descriptor.value = new typeClass();
+        // 这里 不要每次都创建新的实例  创建过的存起来 下次直接取创建过的
+
+        let ins = IocContainer.getInstance(typeClass.name);
+        if(!ins) ins = IocContainer.saveInstance(typeClass.name, typeClass);
+        descriptor.value = ins;
         Reflect.defineProperty(
             (target && target.prototype) || target,
             propertyKey,
