@@ -5,7 +5,7 @@ const IocContainer = {
     classInstanceMap: {},
 
     saveClass(className, classConstructor){
-
+        
     },
 
     saveInstance(className, classConstructor){

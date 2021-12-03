@@ -1,8 +1,10 @@
 import {BaseService} from "./BaseService";
+import {Inject} from "../libs/decorators";
 
 export class UserService {
 
-    name:string = "dsadasdas";
+    @Inject()
+    baseService: BaseService;
 
     async list(){
         return  {name: 'jack', age: "66666"};
