@@ -3,6 +3,7 @@ import * as express from 'express'
 import * as moment from 'moment'
 import {
     Application,
+    Express,
 } from 'express';
 
 import * as bodyParser from 'body-parser'
@@ -22,6 +23,10 @@ class TsExpressApplication {
     async loadBodyParser(){
         this.app.use(bodyParser.urlencoded({extended: false}));
         this.app.use(bodyParser.json({limit: "10mb"}));
+    }
+
+    async setStaticDir(path, dirPath){
+        this.app.use(path, express.static(__dirname + dirPath))
     }
 
     async loadMiddlewareDataMap(){
@@ -58,6 +63,7 @@ class TsExpressApplication {
     async start(){
         this.app = express();
         await this.loadBodyParser();
+        await this.setStaticDir("/static", "/public");
         await this.loadMiddlewareDataMap();
         await this.loadRoutes();
 

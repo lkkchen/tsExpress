@@ -1,13 +1,15 @@
-import {BaseService} from "./BaseService";
+import GoodsService from "./GoodsService";
 import {Inject} from "../libs/decorators";
 
 export class UserService {
 
     @Inject()
-    baseService: BaseService;
+    goodService: GoodsService;
 
     async list(){
-        return  {name: 'jack', age: "66666"};
+        const result = {name: 'jack', age: "66666", goods: null,};
+        result.goods = await this.goodService.listGoods();
+        return result;
     }
     async errorTest(){
         throw {code: 23, msg: "dsadsad"};
