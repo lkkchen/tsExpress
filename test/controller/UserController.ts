@@ -1,7 +1,6 @@
 
-
 import {UserService} from "../service/UserService";
-import {Controller, Get, Inject, Middleware} from "../libs/decorators";
+import {Controller, Get, Inject, Middleware} from "../../src";
 
 
 @Middleware("jwtAuth")

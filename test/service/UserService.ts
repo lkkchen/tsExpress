@@ -1,5 +1,5 @@
 import GoodsService from "./GoodsService";
-import {Inject} from "../libs/decorators";
+import {Inject} from "../../src";
 
 export class UserService {
 

@@ -1,17 +1,14 @@
-import 'reflect-metadata'
 import * as express from 'express'
-import * as moment from 'moment'
 import {
     Application,
-    Express,
 } from 'express';
 
 import * as bodyParser from 'body-parser'
-import {loadController, LoadControllerResult} from "./src/libs/controller_loader";
-import {loadMiddleware, MiddlewareMap} from "./src/libs/middleware_loader";
+import {loadController, LoadControllerResult} from "../loaders";
+import {loadMiddleware, MiddlewareMap} from "../loaders";
 
 
-class TsExpressApplication {
+export class TsExpressApplication {
     app: Application;
     middlewareDataMap: MiddlewareMap;
     config: object;
@@ -74,6 +71,4 @@ class TsExpressApplication {
     }
 }
 
-const App = new TsExpressApplication({});
-App.start().catch();
 

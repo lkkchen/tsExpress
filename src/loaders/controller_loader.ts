@@ -1,5 +1,5 @@
 import {loadFiles, LoadFileResult} from "./file_loader";
-import {controllerPathKey, middlewareKey, requestMethodKey, requestMethodPathKey} from "./decorators";
+import {controllerPathKey, middlewareKey, requestMethodKey, requestMethodPathKey} from "../decorators";
 import {RequestHandler} from "express-serve-static-core";
 
 

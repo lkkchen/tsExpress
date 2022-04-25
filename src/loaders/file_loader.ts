@@ -8,7 +8,7 @@ export interface LoadFileResult {
 }
 
 export function loadFiles(dirPath: string): Array<LoadFileResult> {
-    const baseDir = fsPath.join(process.cwd(), 'src');
+    const baseDir = process.cwd();
     console.log(baseDir);
 
     const startPath = fsPath.join(baseDir, dirPath);
