@@ -6,14 +6,17 @@ export const reqPathParamsKey = "reqPathParams";
 export const reqQueryKey = "reqQuery";
 export const reqBodyKey = "reqBody";
 
+export interface MethodParams {
+    type: string,
+    fieldName: string,
+    valueType: any,
+}
 
-export function createRequestParamsDecorator(method): Function {
-    return function (path): PropertyDecorator {
-        return function (target, propertyKey) {
-            Reflect.defineMetadata(requestMethodKey, method, target, propertyKey);
-            Reflect.defineMetadata(requestMethodPathKey, path, target, propertyKey);
-        }
-    }
+// key: className_methodName
+export type MethodParamsMap = Map<string, Array<MethodParams>>
+
+function saveClassMethodParams() {
+
 }
 
 

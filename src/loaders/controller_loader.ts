@@ -25,6 +25,7 @@ export async function loadController(): Promise<Array<LoadControllerResult>> {
 
         const instance = new theClass();
         const prototype = Reflect.getPrototypeOf(instance);
+        // 方法在原型上
         const methodNames = Object.getOwnPropertyNames(prototype).filter(item => item !== 'constructor');
 
         for(const methodName of methodNames){
@@ -32,14 +33,20 @@ export async function loadController(): Promise<Array<LoadControllerResult>> {
             if(type === '[object Object]'){
                 continue;
             }
+            
 
             const reqMethod = Reflect.getMetadata(requestMethodKey, instance, methodName);
             const reqPath = Reflect.getMetadata(requestMethodPathKey, instance, methodName);
             const methodMiddlewareName = Reflect.getMetadata(middlewareKey, instance, methodName);
 
+
             const handlerFunc: RequestHandler = (req, res, next) => {
                 res['isFindRoute'] = true;
                 let handler = prototype[methodName].bind(instance);
+
+                // 这里调用时传入得参数应该根据 用户注解上写的来
+                // 获取该方法上的元数据
+
                 if(Object.prototype.toString.call(handler) === '[object AsyncFunction]'){
                     handler = function (req, res, next) {
                         prototype[methodName].bind(instance)(req, res).then((result) => {

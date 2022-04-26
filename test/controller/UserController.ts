@@ -1,6 +1,5 @@
-
 import {UserService} from "../service/UserService";
-import {Controller, Get, Inject, Middleware} from "../../src";
+import {Controller, Get, Inject, Middleware, ReqQuery} from "../../src";
 
 
 @Middleware("jwtAuth")
@@ -11,14 +10,17 @@ export class UserController {
 
     @Middleware("roleAuth")
     @Get("/list")
-    async list(req, res){
+    async list(
+        @ReqQuery() page: number,
+        @ReqQuery() pageSize: number
+    ) {
         return await this.userService.list();
     }
 
-    @Get("/error")
-    async error(req, res){
-        return await this.userService.errorTest();
-    }
+    // @Get("/error")
+    // async error(req, res) {
+    //     return await this.userService.errorTest();
+    // }
 
 }
 
