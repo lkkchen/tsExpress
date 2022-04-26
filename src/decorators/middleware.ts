@@ -1,12 +1,25 @@
 import 'reflect-metadata';
 
-export const middlewareKey = "middleware";
+import {saveControllerMetaData, saveControllerMethodMetaData} from "../service";
+
+
 export function Middleware(name) {
     return function (target, propertyKey?) {
         if(propertyKey){
-            Reflect.defineMetadata(middlewareKey, name, target, propertyKey);
+            saveControllerMethodMetaData({
+                className: target.name,
+                methodName: propertyKey,
+                routePath: null,
+                reqMethod: null,
+                middlewareName: name,
+                methodParams: null,
+            })
         }else{
-            Reflect.defineMetadata(middlewareKey, name, target);
+            saveControllerMetaData({
+                className: target.name,
+                routePath: null,
+                middlewareName: name
+            })
         }
     }
 }
