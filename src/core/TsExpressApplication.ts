@@ -1,19 +1,26 @@
 import * as express from 'express'
 import {
     Application,
+    RequestHandler
 } from 'express';
 
 import * as bodyParser from 'body-parser'
 import {loadController, LoadControllerResult} from "../loaders";
 import {loadMiddleware, MiddlewareMap} from "../loaders";
+import {TsExpressApplicationConfig} from "../interface"
+
 
 
 export class TsExpressApplication {
     app: Application;
     middlewareDataMap: MiddlewareMap;
-    config: object;
+    config: TsExpressApplicationConfig = {
+        Interceptors: [],
+        errorHandler: function () {},
+        resultHandler: function () {},
+    };
 
-    constructor(config: object) {
+    constructor(config: TsExpressApplicationConfig) {
         this.config = config;
     }
 
@@ -32,7 +39,11 @@ export class TsExpressApplication {
     }
 
     async loadRoutes(){
-        this.app.use(this.middlewareDataMap.get("crossOrigin").func);
+        if(this.config.Interceptors){
+            for(const func of this.config.Interceptors){
+                this.app.use(func);
+            }
+        }
 
         const controllerList: Array<LoadControllerResult> = await loadController();
         const router = express.Router();
@@ -53,6 +64,9 @@ export class TsExpressApplication {
         }
         this.app.use(router);
 
+        if(this.config.Interceptors){
+
+        }
         this.app.use(this.middlewareDataMap.get("resultHandler").func);
         this.app.use(this.middlewareDataMap.get("notFoundHandler").func)
     }
