@@ -1,5 +1,4 @@
 
-
 // 获取函数的参数名
 export function getParameterName(fn): Array<string> {
     if(typeof fn !== 'object' && typeof fn !== 'function' ) return;
@@ -13,4 +12,9 @@ export function getParameterName(fn): Array<string> {
         .replace(DEFAULT_PARAMS, '');
     let result = code.slice(code.indexOf('(') + 1, code.indexOf(')')).match(/([^\s,]+)/g);
     return result === null ? [] :result;
+}
+
+
+export function getClassName(target) {
+    return target.name || target.constructor.name;
 }

@@ -9,7 +9,7 @@ import {
     ISaveControllerMethodMetaData,
 } from "../interface"
 
-let controllerMetaDataMap: ControllerMetaDataMap = new Map<string, ControllerClassMetaData>();
+export const controllerMetaDataMap: ControllerMetaDataMap = new Map<string, ControllerClassMetaData>();
 
 export function getControllerMetaData(className: string) {
     let controllerMeta = controllerMetaDataMap.get(className);
@@ -37,6 +37,7 @@ export function getControllerMethodMetaData(className: string, methodName: strin
             middlewareNames: new Array<string>(),
             params: new Array<ControllerMethodParams>()
         };
+        controllerMeta.methodMetaDataMap.set(methodName, methodMetaData);
     }
     return methodMetaData;
 }

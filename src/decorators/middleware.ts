@@ -1,13 +1,13 @@
 import 'reflect-metadata';
 
 import {saveControllerMetaData, saveControllerMethodMetaData} from "../service";
-
+import {getClassName} from "../libs"
 
 export function Middleware(name) {
     return function (target, propertyKey?) {
         if(propertyKey){
             saveControllerMethodMetaData({
-                className: target.name,
+                className: getClassName(target),
                 methodName: propertyKey,
                 routePath: null,
                 reqMethod: null,
@@ -16,7 +16,7 @@ export function Middleware(name) {
             })
         }else{
             saveControllerMetaData({
-                className: target.name,
+                className: getClassName(target),
                 routePath: null,
                 middlewareName: name
             })
