@@ -1,8 +1,18 @@
 
-
 import {TsExpressApplication} from "../src"
 
-let App = new TsExpressApplication();
+import {
+    crossOrigin,
+    jwtAuth,
+    roleAuth,
+    resultHandler
+} from "./middleware"
+
+let App = new TsExpressApplication({
+    interceptors: [crossOrigin, jwtAuth],
+    resultHandler: resultHandler
+});
+
 App.start().catch();
 
 

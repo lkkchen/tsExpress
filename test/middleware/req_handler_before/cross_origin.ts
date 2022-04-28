@@ -6,7 +6,7 @@ import {
 import * as moment from "moment";
 import {RequestHandler} from "express-serve-static-core";
 
-export const crossOriginMiddleware: RequestHandler = function (req: Request, res: Response, next: NextFunction) {
+export const crossOrigin: RequestHandler = function (req: Request, res: Response, next: NextFunction) {
     const originalPath = req.originalUrl.split("?")[0];
 
     console.log(`\r\n`);

@@ -6,7 +6,7 @@ import {
 
 import {RequestHandler} from "express-serve-static-core";
 
-export const jwtAuthMiddleware: RequestHandler = function (req: Request, res: Response, next: NextFunction) {
+export const jwtAuth: RequestHandler = function (req: Request, res: Response, next: NextFunction) {
     console.log(`jwtAuthMiddleware`);
 
     next();

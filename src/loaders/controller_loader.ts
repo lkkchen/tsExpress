@@ -37,10 +37,13 @@ export async function loadController(): Promise<Array<LoadControllerResult>> {
             }
             const methodMetaData = controllerMetaData.methodMetaDataMap.get(methodName);
             let paramsNames = getParameterName(prototype[methodName])
-            // console.log(paramsNames)
+            console.log(paramsNames)
 
             paramsNames.forEach((name, idx) => {
-                methodMetaData.params[idx].fieldName = name;
+                // 这里要判断下  有可能用户方法的参数上没写注解
+                if(methodMetaData.params[idx]){
+                    methodMetaData.params[idx].fieldName = name;
+                }
             });
             // console.log(methodMetaData);
 
@@ -70,9 +73,6 @@ export async function loadController(): Promise<Array<LoadControllerResult>> {
                 if(Object.prototype.toString.call(reqHandler) === '[object AsyncFunction]'){
                     reqHandler(...finalParams).then((result) => {
                         res['resResult'] = result;
-
-                        // 增加默认返回结构?
-
                         next();
                     }).catch((err) => {
                         console.error("----------ERROR-----------");

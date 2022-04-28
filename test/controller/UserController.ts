@@ -8,7 +8,7 @@ class ReqUserInfoData {
     age: number;
 }
 
-@UseInterceptor("jwtAuth")
+
 @Controller('/user')
 export class UserController {
     @Inject()
@@ -22,13 +22,15 @@ export class UserController {
         @ReqQuery() page: number,
         @ReqQuery() pageSize: number,
     ) {
+        console.log(req.query);
         console.log(page, pageSize);
+        return {asdasdsa: "353"}
     }
-    //
-    // @Get("/error")
-    // async error(req, res) {
-    //     return await this.userService.errorTest();
-    // }
+
+    @Get("/error")
+    async error(req, res) {
+        return await this.userService.errorTest();
+    }
 
 }
 

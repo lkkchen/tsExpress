@@ -12,7 +12,8 @@ export class UserService {
         return result;
     }
     async errorTest(){
-        throw {code: 23, msg: "dsadsad"};
+        // throw {code: 23, msg: "dsadsad"};
+        throw "my error"
     }
 
 }

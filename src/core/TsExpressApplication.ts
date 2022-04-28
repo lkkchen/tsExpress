@@ -43,7 +43,7 @@ export class TsExpressApplication {
 
         const controllerList: Array<LoadControllerResult> = await loadController();
         const router = express.Router();
-        // console.log(controllerList);
+        console.log(controllerList);
         for (const controller of controllerList) {
 
             const middlewareFuncList = [];
@@ -61,7 +61,7 @@ export class TsExpressApplication {
         this.app.use(router);
 
         this.app.use((req, res, next) => {
-            let isNotFound = !!res['isFindRoute'];
+            let isNotFound = !!!res['isFindRoute'];
             let err = res['resError'];
             let resResult = res['resResult'];
             let cusResult = this.resultHandler(err, isNotFound, resResult);
