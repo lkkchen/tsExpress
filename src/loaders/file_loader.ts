@@ -9,12 +9,12 @@ export interface LoadFileResult {
 
 export function loadFiles(dirPath: string): Array<LoadFileResult> {
     const baseDir = process.cwd();
-    console.log(baseDir);
+    // console.log(baseDir);
 
     const startPath = fsPath.join(baseDir, dirPath);
     const from = fsPath.basename(startPath);
-    console.log(startPath);
-    console.log(from);
+    // console.log(startPath);
+    // console.log(from);
 
     let result: Array<LoadFileResult> = [];
     function finder(path, faDirName = "") {

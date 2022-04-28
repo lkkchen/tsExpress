@@ -1,5 +1,5 @@
 import {UserService} from "../service/UserService";
-import {Controller, Get, Inject, Middleware, ReqBody, ReqQuery, RequestCtx, ResponseCtx} from "../../src";
+import {Controller, Get, Inject, UseInterceptor, ReqBody, ReqQuery, RequestCtx, ResponseCtx} from "../../src";
 import {TRequest, TResponse} from "../../src/interface";
 
 
@@ -8,13 +8,13 @@ class ReqUserInfoData {
     age: number;
 }
 
-@Middleware("jwtAuth")
+@UseInterceptor("jwtAuth")
 @Controller('/user')
 export class UserController {
     @Inject()
     userService: UserService;
 
-    @Middleware("roleAuth")
+    @UseInterceptor("roleAuth")
     @Get("/list")
     async list(
         @RequestCtx() req,

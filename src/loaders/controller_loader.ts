@@ -37,12 +37,12 @@ export async function loadController(): Promise<Array<LoadControllerResult>> {
             }
             const methodMetaData = controllerMetaData.methodMetaDataMap.get(methodName);
             let paramsNames = getParameterName(prototype[methodName])
-            console.log(paramsNames)
+            // console.log(paramsNames)
 
             paramsNames.forEach((name, idx) => {
                 methodMetaData.params[idx].fieldName = name;
             });
-            console.log(methodMetaData);
+            // console.log(methodMetaData);
 
             const handlerFunc: RequestHandler = (req, res, next) => {
                 res['isFindRoute'] = true;
@@ -91,6 +91,9 @@ export async function loadController(): Promise<Array<LoadControllerResult>> {
 
             // controller的中间件在前 method的在后
             let finalMiddles = controllerMetaData.middlewareNames.concat(methodMetaData.middlewareNames);
+            // 去除重复的中间件
+            finalMiddles = finalMiddles.filter((name, idx) => (finalMiddles.indexOf(name) === idx));
+
             loadControllerResult.push({
                 path: `${controllerMetaData.routePath}${methodMetaData.routePath}`,
                 method: methodMetaData.reqMethod,

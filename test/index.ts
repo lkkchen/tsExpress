@@ -2,7 +2,7 @@
 
 import {TsExpressApplication} from "../src"
 
-let App = new TsExpressApplication({});
+let App = new TsExpressApplication();
 App.start().catch();
 
 

@@ -1,5 +1,5 @@
 import {
-    Request, Response, RequestHandler
+    Request, Response, RequestHandler, NextFunction
 } from "express-serve-static-core"
 // import {RequestHandler} from "express";
 
@@ -11,16 +11,14 @@ export type TRequest = Request;
 export type TResponse = Response;
 
 
-
-export interface TsExpressApplicationConfig  {
-    Interceptors: Array<RequestHandler>;
-    errorHandler: RequestHandler;
-    resultHandler: RequestHandler;
-}
-
 export type TsResultHandlerFunc = (
     err: any,
     isNotFound: boolean,
-    req: Request,
-    res: Response,
-) => RequestHandler;
+    resResult: any,
+) => any;
+
+export interface TsExpressApplicationConfig  {
+    interceptors: Array<RequestHandler> | [];
+    resultHandler: TsResultHandlerFunc;
+}
+

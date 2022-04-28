@@ -35,7 +35,6 @@ export function Inject (): PropertyDecorator {
         // 这里 不要每次都创建新的实例  创建过的存起来 下次直接取创建过的
 
         let ins = IocContainer.getInstance(typeClass);
-        console.log(ins);
         if(!ins) ins = IocContainer.saveInstance(typeClass);
 
         descriptor.value = ins;

@@ -3,7 +3,7 @@ import 'reflect-metadata';
 import {saveControllerMetaData, saveControllerMethodMetaData} from "../service";
 import {getClassName} from "../libs"
 
-export function Middleware(name) {
+export function UseInterceptor(name) {
     return function (target, propertyKey?) {
         if(propertyKey){
             saveControllerMethodMetaData({
@@ -23,4 +23,3 @@ export function Middleware(name) {
         }
     }
 }
-
