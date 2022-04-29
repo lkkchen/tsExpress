@@ -26,7 +26,7 @@ export function getControllerMetaData(className: string) {
 }
 
 
-export function getControllerMethodMetaData(className: string, methodName: string) {
+export function getControllerMethodMetaData(className: string, methodName: string): ControllerMethodMetaData {
     let controllerMeta = getControllerMetaData(className);
     let methodMetaData = controllerMeta.methodMetaDataMap.get(methodName);
     if (!methodMetaData) {
@@ -35,7 +35,8 @@ export function getControllerMethodMetaData(className: string, methodName: strin
             routePath: "/",
             reqMethod: "",
             middlewareNames: new Array<string>(),
-            params: new Array<ControllerMethodParams>()
+            params: new Array<ControllerMethodParams>(),
+            methodReturnType: null,
         };
         controllerMeta.methodMetaDataMap.set(methodName, methodMetaData);
     }
@@ -59,4 +60,5 @@ export function saveControllerMethodMetaData(data: ISaveControllerMethodMetaData
     if(data.methodParams){
         methodMetaData.params[data.methodParams.index] = data.methodParams;
     }
+    methodMetaData.methodReturnType = data.methodReturnType;
 }

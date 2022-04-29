@@ -9,6 +9,10 @@ export function createRequestMethodDecorator(method): Function {
     return function (path): PropertyDecorator {
         return function (target, propertyKey: string) {
 
+            let sd = Reflect.getMetadata('design:returntype', target, propertyKey);
+            console.log(sd)
+            console.log(sd.toString())
+
             saveControllerMethodMetaData({
                 className: getClassName(target),
                 methodName: propertyKey,
@@ -16,6 +20,7 @@ export function createRequestMethodDecorator(method): Function {
                 reqMethod: method,
                 middlewareName: null,
                 methodParams: null,
+                methodReturnType: Reflect.getMetadata('design:returntype', target, propertyKey)
             })
         }
     }

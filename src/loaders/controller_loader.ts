@@ -1,3 +1,4 @@
+import "reflect-metadata"
 import {loadFiles, LoadFileResult} from "./file_loader";
 import {RequestHandler} from "express-serve-static-core";
 import { controllerMetaDataMap } from "../service"
@@ -35,6 +36,11 @@ export async function loadController(): Promise<Array<LoadControllerResult>> {
             if(Object.prototype.toString.call(instance[methodName]) === '[object Object]'){
                 continue;
             }
+
+            // 获取返回值
+            const methodReturnType = Reflect.getMetadata("design:returntype", theClass, methodName)
+            console.log(methodReturnType)
+
             const methodMetaData = controllerMetaData.methodMetaDataMap.get(methodName);
             let paramsNames = getParameterName(prototype[methodName])
             console.log(paramsNames)
@@ -45,7 +51,7 @@ export async function loadController(): Promise<Array<LoadControllerResult>> {
                     methodMetaData.params[idx].fieldName = name;
                 }
             });
-            // console.log(methodMetaData);
+            console.log(methodMetaData);
 
             const handlerFunc: RequestHandler = (req, res, next) => {
                 res['isFindRoute'] = true;

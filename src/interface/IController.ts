@@ -21,7 +21,8 @@ export interface ControllerMethodMetaData {
     routePath: string | '/',
     reqMethod: string,
     middlewareNames: Array<string>,
-    params: Array<ControllerMethodParams>
+    params: Array<ControllerMethodParams>,
+    methodReturnType: any,
 }
 
 export interface ControllerClassMetaData {
@@ -47,6 +48,7 @@ export interface ISaveControllerMethodMetaData {
     routePath: string,
     reqMethod: string,
     middlewareName: string,
-    methodParams: ControllerMethodParams
+    methodParams: ControllerMethodParams,
+    methodReturnType?: any,
 }
 
