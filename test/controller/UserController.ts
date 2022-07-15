@@ -1,5 +1,9 @@
 import {UserService} from "../service/UserService";
-import {Controller, Get, Inject, UseInterceptor, ReqBody, ReqQuery, RequestCtx, ResponseCtx} from "../../src";
+import {
+    Inject, Controller, Get,
+    UseInterceptor, ReqBody,
+    ReqQuery, RequestCtx, ResponseCtx
+} from "../../src";
 import {TRequest, TResponse} from "../../src/interface";
 
 import { ReqSubmitUserData } from "../Interface/request/UserRequest"
